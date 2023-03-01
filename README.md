@@ -30,7 +30,7 @@ Think of it as the good old snake phone game!
 
 You should be able to launch the tests once the repo is cloned on your machine with the following command :
 
-`/.mvnw test`
+`./mvnw test`
 
 Feel free to add any in order to try the app's behavior!
 
