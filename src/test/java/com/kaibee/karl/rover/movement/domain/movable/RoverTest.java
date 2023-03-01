@@ -48,6 +48,26 @@ class RoverTest {
   }
 
   @Test
+  void shouldNotInstantiateRoverWithFunnyPosition() {
+    CartesianCoordinates expectedCoordinates1 = new CartesianCoordinates(7, 2);
+    CartesianCoordinates expectedCoordinates2 = new CartesianCoordinates(1, 1);
+    CartesianCoordinates expectedCoordinates3 = new CartesianCoordinates(10, 10);
+    CartesianCoordinates funnyCoordinates1 = new CartesianCoordinates(127, 12);
+    CartesianCoordinates funnyCoordinates2 = new CartesianCoordinates(11, 11);
+    CartesianCoordinates funnyCoordinates3 = new CartesianCoordinates(0, 0);
+    Grid grid = new MarsPlateau(10, 10);
+    Orientation orientation = OrientationStrategy.EAST.getOrientation();
+
+    Movable rover1 = new Rover(funnyCoordinates1, grid, orientation);
+    Movable rover2 = new Rover(funnyCoordinates2, grid, orientation);
+    Movable rover3 = new Rover(funnyCoordinates3, grid, orientation);
+
+    assertEquals(expectedCoordinates1, rover1.getCoordinates());
+    assertEquals(expectedCoordinates2, rover2.getCoordinates());
+    assertEquals(expectedCoordinates3, rover3.getCoordinates());
+  }
+
+  @Test
   void shouldSetOrientationOrSetCoordinatesWhenExecutingCommand() {
     LandVehicle rover1 = RoverTestHelper.buildValidRover();
     LandVehicle rover2 = RoverTestHelper.buildValidRover();

@@ -122,8 +122,8 @@ public class MarsPlateau implements Grid {
 
   private int wrapPositionAroundAxis(int axisBound, int position) {
     if (position <= 0) {
-      return axisBound + position;
+      return axisBound + position % axisBound;
     }
-    return position - axisBound;
+    return position % axisBound;
   }
 }
