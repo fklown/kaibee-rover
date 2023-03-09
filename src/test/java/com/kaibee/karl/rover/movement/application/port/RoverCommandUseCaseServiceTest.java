@@ -4,11 +4,11 @@ import com.kaibee.karl.rover.movement.application.port.in.RoverCommandUseCase;
 import com.kaibee.karl.rover.movement.domain.exception.InvalidActionCommandException;
 import com.kaibee.karl.rover.movement.domain.grid.CartesianCoordinates;
 import com.kaibee.karl.rover.movement.domain.movable.LandVehicle;
-import com.kaibee.karl.rover.movement.domain.orientation.EastOrientation;
-import com.kaibee.karl.rover.movement.domain.orientation.NorthOrientation;
 import org.junit.jupiter.api.Test;
 
-import static com.kaibee.karl.rover.movement.domain.movable.RoverTestHelper.buildValidRover;
+import static com.kaibee.karl.rover.movement.domain.movable.RoverHelper.buildValidRover;
+import static com.kaibee.karl.rover.movement.domain.orientation.OrientationHelper.east;
+import static com.kaibee.karl.rover.movement.domain.orientation.OrientationHelper.north;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -50,9 +50,9 @@ class RoverCommandUseCaseServiceTest {
     LandVehicle actual1 = roverCommandUseCaseService.executeCommandSequence(rover1, actionSequence1);
     LandVehicle actual2 = roverCommandUseCaseService.executeCommandSequence(rover2, actionSequence2);
 
-    assertEquals(NorthOrientation.class, actual1.getOrientation().getClass());
+    assertEquals(north(), actual1.getOrientation());
     assertEquals(expectedCoordinates1, actual1.getCoordinates());
-    assertEquals(EastOrientation.class, actual2.getOrientation().getClass());
+    assertEquals(east(), actual2.getOrientation());
     assertEquals(expectedCoordinates2, actual2.getCoordinates());
   }
 

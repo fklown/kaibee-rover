@@ -4,13 +4,12 @@ import com.kaibee.karl.rover.movement.domain.exception.ObstacleEncounteredExcept
 import com.kaibee.karl.rover.movement.domain.grid.CartesianCoordinates;
 import com.kaibee.karl.rover.movement.domain.grid.Grid;
 import com.kaibee.karl.rover.movement.domain.grid.MarsPlateau;
-import com.kaibee.karl.rover.movement.domain.orientation.EastOrientation;
 import com.kaibee.karl.rover.movement.domain.orientation.Orientation;
-import com.kaibee.karl.rover.movement.domain.orientation.OrientationStrategy;
-import com.kaibee.karl.rover.movement.domain.orientation.WestOrientation;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
+import static com.kaibee.karl.rover.movement.domain.orientation.OrientationHelper.east;
+import static com.kaibee.karl.rover.movement.domain.orientation.OrientationHelper.west;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,7 +20,7 @@ class RoverTest {
   void shouldInstantiateRoverWithValidData() {
     CartesianCoordinates coordinates = new CartesianCoordinates(1, 1);
     Grid grid = new MarsPlateau(18, 18);
-    Orientation orientation = OrientationStrategy.EAST.getOrientation();
+    Orientation orientation = east();
     Movable rover = new Rover(coordinates, grid, orientation);
 
     assertNotNull(rover);
@@ -33,7 +32,7 @@ class RoverTest {
   void shouldNotInstantiateInvalidRover() {
     CartesianCoordinates coordinates = new CartesianCoordinates(1, 1);
     Grid grid = new MarsPlateau(18, 18);
-    Orientation orientation = OrientationStrategy.EAST.getOrientation();
+    Orientation orientation = east();
     String expectedMessage = "Error creating Rover - invalid argument(s)";
 
     Exception rover1 = assertThrows(IllegalArgumentException.class, () -> new Rover(null, grid, orientation));
@@ -56,7 +55,7 @@ class RoverTest {
     CartesianCoordinates funnyCoordinates2 = new CartesianCoordinates(11, 11);
     CartesianCoordinates funnyCoordinates3 = new CartesianCoordinates(0, 0);
     Grid grid = new MarsPlateau(10, 10);
-    Orientation orientation = OrientationStrategy.EAST.getOrientation();
+    Orientation orientation = east();
 
     Movable rover1 = new Rover(funnyCoordinates1, grid, orientation);
     Movable rover2 = new Rover(funnyCoordinates2, grid, orientation);
@@ -69,10 +68,10 @@ class RoverTest {
 
   @Test
   void shouldSetOrientationOrSetCoordinatesWhenExecutingCommand() {
-    LandVehicle rover1 = RoverTestHelper.buildValidRover();
-    LandVehicle rover2 = RoverTestHelper.buildValidRover();
-    LandVehicle rover3 = RoverTestHelper.buildValidRover();
-    LandVehicle rover4 = RoverTestHelper.buildValidRover();
+    LandVehicle rover1 = RoverHelper.buildValidRover();
+    LandVehicle rover2 = RoverHelper.buildValidRover();
+    LandVehicle rover3 = RoverHelper.buildValidRover();
+    LandVehicle rover4 = RoverHelper.buildValidRover();
 
     CartesianCoordinates rover1ActualCoordinates = rover1.getOrientation().moveForward(rover1);
     CartesianCoordinates rover2ActualCoordinates = rover2.getOrientation().moveBackward(rover2);
@@ -81,8 +80,8 @@ class RoverTest {
 
     CartesianCoordinates expectedCoordinatesAfterMovingForward = new CartesianCoordinates(4, 5);
     CartesianCoordinates expectedCoordinatesAfterMovingBackward = new CartesianCoordinates(4, 3);
-    boolean expectedOrientationAfterRotatingLeft = rover3ActualOrientation instanceof WestOrientation;
-    boolean expectedOrientationAfterRotatingRight = rover4ActualOrientation instanceof EastOrientation;
+    boolean expectedOrientationAfterRotatingLeft = rover3ActualOrientation.equals(west());
+    boolean expectedOrientationAfterRotatingRight = rover4ActualOrientation.equals(east());
 
     assertEquals(expectedCoordinatesAfterMovingForward, rover1ActualCoordinates);
     assertEquals(expectedCoordinatesAfterMovingBackward, rover2ActualCoordinates);
@@ -93,8 +92,8 @@ class RoverTest {
   @Test
   void shouldNotPerformMoveAndAbortSequenceWhenObstacleIsPresent() {
     Set<CartesianCoordinates> obstacles = Set.of(new CartesianCoordinates(5, 8));
-    OrientationStrategy orientationStrategy = OrientationStrategy.EAST;
-    LandVehicle rover = RoverTestHelper.buildValidRover(4, 8, orientationStrategy, obstacles);
+    Orientation orientationStrategy = east();
+    LandVehicle rover = RoverHelper.buildValidRover(4, 8, orientationStrategy, obstacles);
     String expectedMessage = "Encountered a grid obstacle at (5,8), aborting sequence";
 
     Exception actualException = assertThrows(ObstacleEncounteredException.class, rover::moveForward);
@@ -104,8 +103,8 @@ class RoverTest {
 
   @Test
   void shouldWrapAroundAxisEdgesWhenMovingGoesBeyondMinOrMaxPoints() {
-    LandVehicle xAxisMinimumRover = RoverTestHelper.buildValidRover(1, 7, OrientationStrategy.WEST);
-    LandVehicle xAxisMaximumRover = RoverTestHelper.buildValidRover(10, 7, OrientationStrategy.EAST);
+    LandVehicle xAxisMinimumRover = RoverHelper.buildValidRover(1, 7, west());
+    LandVehicle xAxisMaximumRover = RoverHelper.buildValidRover(10, 7, east());
     CartesianCoordinates expectedXMinRoverCoordinates = new CartesianCoordinates(10, 7);
     CartesianCoordinates expectedXMaxRoverCoordinates = new CartesianCoordinates(1, 7);
 
