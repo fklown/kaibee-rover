@@ -21,7 +21,9 @@ In the exact same spirit, an obstacle is the space taken by any impassable terra
 
 The grid features wrapping around the edges.
 
-Say we're on a 4 by 4 grid, and a command sends the rover from (1,4) to (1,5), then it should land on (1,1) if there is no obstacle there.
+For example, say we're on a 4 by 4 grid, and a command sends the rover from (1,4) to (1,5), then wrapping should make it land on (1,1) if there are no obstacles there.
+
+Another simple example would be a rover sent from (1,4) to (0,4), then wrapping should make it land on (4,4) if there are no obstacles there.
 
 Think of it as the good old snake phone game!
 
