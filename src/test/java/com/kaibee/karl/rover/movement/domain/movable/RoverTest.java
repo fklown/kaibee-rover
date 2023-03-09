@@ -47,7 +47,7 @@ class RoverTest {
   }
 
   @Test
-  void shouldNotInstantiateRoverWithFunnyPosition() {
+  void shouldWrapFunnyPositionWhenInstantiatingRover() {
     CartesianCoordinates expectedCoordinates1 = new CartesianCoordinates(7, 2);
     CartesianCoordinates expectedCoordinates2 = new CartesianCoordinates(1, 1);
     CartesianCoordinates expectedCoordinates3 = new CartesianCoordinates(10, 10);
